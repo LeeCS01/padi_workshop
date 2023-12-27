@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Dashboard(),
+    );
+  }
+}
+
+class Dashboard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+     //   title: Text('SawahCek'),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+          Text(
+            'Real Time Water Level Monitoring System',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 20),
+          // Four Icons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              DashboardIcon(icon: Icons.notifications, label: 'Notification'),
+              DashboardIcon(icon: Icons.data_usage, label: 'My Canal Level'),
+              DashboardIcon(icon: Icons.description, label: 'E report'),
+              DashboardIcon(icon: Icons.settings, label: 'My Settings'),
+              ElevatedButton(
+                  onPressed:(){
+                    Fluttertoast.showToast(msg: "Selamat Anda DiPilih Menjadi Wali Kota Medan",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 2,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 15,
+
+                    );
+                  },
+                  child: Text("Tekan Aja"))
+            ],
+          ),
+        ],
+      ),
+
+      // Bottom left button
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Handle the back button press
+        },
+        child: Icon(Icons.arrow_back),
+      ),
+    );
+  }
+}
+
+
+class DashboardIcon extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  DashboardIcon({required this.icon, required this.label});
+
+ \
