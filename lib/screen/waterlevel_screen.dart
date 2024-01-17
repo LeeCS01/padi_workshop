@@ -87,60 +87,6 @@ class _ParasAirState extends State<ParasAir> {
 
   String _twoDigits(int n) => n.toString().padLeft(2, '0');
 
-  // void _addUser() async {
-  //   try{
-  //     String fullname = fullnameController.text.trim();
-  //     String username = usernameController.text.trim();
-  //     String email = emailController.text.trim();
-  //     String password = passwordController.text.trim();
-  //     String phone = phoneController.text.trim();
-  //     String address = addressController.text.trim();
-  //     String state = stateController.text.trim();
-  //     SignUp ahli = SignUp(0, fullname, username, phone, address, state, email, password);
-  //
-  //     if (await ahli.save()) {
-  //       setState(() {
-  //         users.add(ahli);
-  //         fullnameController.clear();
-  //         usernameController.clear();
-  //         phoneController.clear();
-  //         addressController.clear();
-  //         stateController.clear();
-  //         emailController.clear();
-  //         passwordController.clear();
-  //         _showMessage("SignUp Successful.");
-  //
-  //         Future.delayed(const Duration(milliseconds: 2000), () {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //               builder: (context) => const Dam(),
-  //             ),
-  //           );
-  //         });
-  //       });
-  //     }else {
-  //       _showMessage("Email already been used. Try another email.");
-  //     }
-  //     emailController.clear();
-  //   }
-  //   catch(e) {
-  //     _showMessage(e.toString());
-  //   }
-  // }
-  //
-  // void _showMessage(String msg) {
-  //   if (mounted) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(msg),
-  //       ),
-  //     );
-  //   }
-  // }
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

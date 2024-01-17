@@ -5,6 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class AdminReportcentre extends StatefulWidget {
+
+  final String id;
+
+  AdminReportcentre({
+    required this.id,
+  });
+
   @override
   _AdminReportcentreState createState() => _AdminReportcentreState();
 }
@@ -15,10 +22,12 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
   List? Qlist = [];
   List? OnList=[];
   List? DoneList=[];
+  late String AdminId;
+
 
   //Data Diambil Qlist
   Future<List?> getQlist() async {
-    final response = await http.get(Uri.parse("http://10.131.78.75/sawahcek/getdatareqaduan.php"));
+    final response = await http.get(Uri.parse("http://10.131.73.13/sawahcek/getdatareqaduan_admin.php"));
     return json.decode(response.body);
   }
 
@@ -26,15 +35,17 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
 //---------------------------------------------------------------------------------------------------
   //Data Diambil Onlist
   Future<List?> getOnlist() async {
-    final response = await http.get(Uri.parse("http://10.131.78.75/sawahcek/getdataonprogress.php"));
+    final response = await http.get(Uri.parse("http://10.131.73.13/sawahcek/getdataonprogress_admin.php"));
     return json.decode(response.body);
   }
+  
 
 
 //---------------------------------------------------------------------------------------------------
   //Data Diambil Onlist
   Future<List?> getDonelist() async {
-    final response = await http.get(Uri.parse("http://10.131.78.75/sawahcek/getdatadone.php"));
+    final response = await http.get(Uri.parse("http://10.131.73.13/sawahcek/getdatadone_admin.php"));
+
     return json.decode(response.body);
   }
 
@@ -43,6 +54,7 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
 
   @override
   void initState() {
+    AdminId = widget.id;
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     getQlist().then((value) {
@@ -171,7 +183,7 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
                         child: GestureDetector(
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (BuildContext context) => DetailAdminReportCentre(list: Qlist, index: i),
+                              builder: (BuildContext context) => DetailAdminReportCentre(list: Qlist,index: i),
                             ),
                           ),
                           child: Card(

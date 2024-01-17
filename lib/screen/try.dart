@@ -14,7 +14,7 @@ class _TryState extends State<Try> {
 
   //Get all categories from API
   Future<Null> getData() async {
-    final response = await http.post(Uri.parse("http://10.131.78.75/sawahcek/getdevice.php"));
+    final response = await http.post(Uri.parse("http://10.131.73.13/sawahcek/getdevice.php"));
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         var jsonResult = jsonDecode(response.body);

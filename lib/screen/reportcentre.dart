@@ -4,6 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Reportcentre extends StatefulWidget {
+  final String id;
+  final String username;
+
+  Reportcentre({
+    required this.id,
+    required this.username,
+  });
+
+
   @override
   _ReportcentreState createState() => _ReportcentreState();
 }
@@ -11,13 +20,39 @@ class Reportcentre extends StatefulWidget {
 class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   //list array
+
   List? Qlist = [];
   List? OnList=[];
   List? DoneList=[];
 
+
+  Future<List?> sendDataToServer() async {
+    Map<String, dynamic> postData = {
+      'TargetUser': widget.id,
+    };
+
+    final response = await http.post(
+      Uri.parse("http://10.131.73.13/sawahcek/getnotifdevice.php"),
+      body: postData,
+    );
+
+    return json.decode(response.body);
+  }
+
+
+
+
   //Data Diambil Qlist
   Future<List?> getQlist() async {
-    final response = await http.get(Uri.parse("http://10.131.78.75/sawahcek/getdatareqaduan.php"));
+    Map<String, dynamic> postData = {
+      'FarmerID': widget.id,
+    };
+
+    final response = await http.post(
+      Uri.parse("http://10.131.73.13/sawahcek/getdatareqaduan.php"),
+      body: postData,
+    );
+
     return json.decode(response.body);
   }
 
@@ -25,7 +60,15 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
 //---------------------------------------------------------------------------------------------------
   //Data Diambil Onlist
   Future<List?> getOnlist() async {
-    final response = await http.get(Uri.parse("http://10.131.78.75/sawahcek/getdataonprogress.php"));
+    Map<String, dynamic> postData = {
+      'FarmerID': widget.id,
+    };
+
+    final response = await http.post(
+      Uri.parse("http://10.131.73.13/sawahcek/getdataonprogress.php"),
+      body: postData,
+    );
+
     return json.decode(response.body);
   }
 
@@ -33,7 +76,15 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
 //---------------------------------------------------------------------------------------------------
   //Data Diambil Onlist
   Future<List?> getDonelist() async {
-    final response = await http.get(Uri.parse("http://10.131.78.75/sawahcek/getdatadone.php"));
+    Map<String, dynamic> postData = {
+      'FarmerID': widget.id,
+    };
+
+    final response = await http.post(
+      Uri.parse("http://10.131.73.13/sawahcek/getdatadone.php"),
+      body: postData,
+    );
+
     return json.decode(response.body);
   }
 
@@ -43,6 +94,7 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
+    String farmerID = widget.id;
     _tabController = TabController(length: 3, vsync: this);
     getQlist().then((value) {
       setState(() {

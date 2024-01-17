@@ -24,7 +24,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     };
 
     final response = await http.post(
-      Uri.parse("https://10.131.78.75/updatepass.php"),
+      Uri.parse("https://10.131.73.13/updatepass.php"),
       body: postData,
     );
 

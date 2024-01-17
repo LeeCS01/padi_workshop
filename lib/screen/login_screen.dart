@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sawahcek/screen/dashboard_screen_admin.dart';
-import 'package:sawahcek/screen/signup_screen_admin.dart';
 import 'package:sawahcek/screen/signup_screen_user.dart';
 
 import '../model/login_model.dart';
@@ -55,7 +54,7 @@ class _LoginState extends State<Login> {
 
             if (lowerCaseLevel == "admin") {
               // Navigate to register screen for admin
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => DashboardAdmin(
                   id: logins.id.toString(),
@@ -67,7 +66,7 @@ class _LoginState extends State<Login> {
               );
             } else if (lowerCaseLevel == "member") {
               // Navigate to dashboard screen for member
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => DashboardUser(
@@ -80,8 +79,6 @@ class _LoginState extends State<Login> {
                 ),
               );
             }
-
-            // ... (other conditions based on user's level)
           });
         });
 
@@ -106,7 +103,6 @@ class _LoginState extends State<Login> {
       );
     }
   }
-   
 
   @override
   Widget build(BuildContext index) {
@@ -120,122 +116,71 @@ class _LoginState extends State<Login> {
             constraints: BoxConstraints(
               minHeight: cons.maxHeight,
             ),
-            child: SingleChildScrollView(
-
-              child: Column(
-
-                children: [
-                  //const SizedBox(height: 50,),
-                  //login header
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: 285,
-                    child: Image.asset("images/GUI.png",),
-                  ),
-
-                  const SizedBox(height: 20,),
-
-                  const Text("SawahCek",
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(0, 63, 100, 50),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    //const SizedBox(height: 50,),
+                    //login header
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 285,
+                      child: Image.asset("images/GUI.png",),
                     ),
-                  ),
 
-                  const Text("Real Time Water Level",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(0, 63, 100, 50),
+                    const SizedBox(height: 20,),
+
+                    const Text("SawahCheck",
+                      style: TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(0, 63, 100, 50),
+                      ),
                     ),
-                  ),
 
-                  const Text("Monitoring System",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(0, 63, 100, 50),
+                    const Text("Real Time Water Level",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(0, 63, 100, 50),
+                      ),
                     ),
-                  ),
 
-                  const SizedBox(height: 10,),
+                    const Text("Monitoring System",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(0, 63, 100, 50),
+                      ),
+                    ),
 
-                  //login sign-in form
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 30, 30, 8),
-                    child: Column(
-                      children: [
-                        //email, password, login button
-                        Form(
-                          key: formKey,
-                          child: Column(
-                            children: [
+                    const SizedBox(height: 10,),
 
-                              //getting email from user
-                              TextFormField(
-                                controller: emailController,
-                                validator: (val) => val == "" ? "Please write email" : null,
-                                decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.email,
-                                    color: Colors.black,
-                                  ),
-                                  hintText: "email...",
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      borderSide: const BorderSide(
-                                        color: Colors.red,
-                                      )
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      borderSide: const BorderSide(
-                                        color: Color.fromRGBO(0, 63, 100, 50),
-                                        width: 3.0,
-                                      )
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                    vertical: 6,
-                                  ),
-                                  fillColor: Colors.white,
-                                  filled: true,
-                                ),
+                    //login sign-in form
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 30, 30, 8),
+                      child: Column(
+                        children: [
+                          //email, password, login button
+                          Form(
+                            key: formKey,
+                            child: Column(
+                              children: [
 
-                              ),
-
-                              //add space between email and password box
-                              const SizedBox(height: 18,),
-
-                              //getting password from user
-                              Obx(
-                                    () => TextFormField(
-                                  controller: passwordController,
-                                  obscureText: isObsecure.value,
-                                  validator: (val) => val == "" ? "Please write password" : null,
+                                //getting email from user
+                                TextFormField(
+                                  controller: emailController,
+                                  validator: (val) => val == "" ? "Please write email" : null,
                                   decoration: InputDecoration(
                                     prefixIcon: const Icon(
-                                      Icons.vpn_key_sharp,
+                                      Icons.email,
                                       color: Colors.black,
                                     ),
-                                    //add icon to hide and show password
-                                    suffixIcon: Obx(
-                                          ()=> GestureDetector(
-                                        onTap: () {
-                                          isObsecure.value = !isObsecure.value;
-                                        },
-                                        child: Icon(
-                                          isObsecure.value ? Icons.visibility_off : Icons.visibility,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                    hintText: "password...",
+                                    hintText: "email...",
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(30),
                                         borderSide: const BorderSide(
-                                          color: Colors.white60,
+                                          color: Colors.red,
                                         )
                                     ),
                                     enabledBorder: OutlineInputBorder(
@@ -254,124 +199,157 @@ class _LoginState extends State<Login> {
                                   ),
 
                                 ),
-                              ),
 
-                              //add space between login and password box
-                              const SizedBox(height: 18,),
-                            ],
-                          ),
-                        ),
-                        /*Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("Are you an Admin"),
-                                TextButton(
-                                  onPressed: () {
+                                //add space between email and password box
+                                const SizedBox(height: 18,),
 
-                                  },
-                                  child: const Text("Click Here",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.lightBlueAccent,
+                                //getting password from user
+                                Obx(
+                                      () => TextFormField(
+                                    controller: passwordController,
+                                    obscureText: isObsecure.value,
+                                    validator: (val) => val == "" ? "Please write password" : null,
+                                    decoration: InputDecoration(
+                                      prefixIcon: const Icon(
+                                        Icons.vpn_key_sharp,
+                                        color: Colors.black,
+                                      ),
+                                      //add icon to hide and show password
+                                      suffixIcon: Obx(
+                                            ()=> GestureDetector(
+                                          onTap: () {
+                                            isObsecure.value = !isObsecure.value;
+                                          },
+                                          child: Icon(
+                                            isObsecure.value ? Icons.visibility_off : Icons.visibility,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      hintText: "password...",
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(30),
+                                          borderSide: const BorderSide(
+                                            color: Colors.white60,
+                                          )
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(30),
+                                          borderSide: const BorderSide(
+                                            color: Color.fromRGBO(0, 63, 100, 50),
+                                            width: 3.0,
+                                          )
+                                      ),
+                                      contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 6,
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
                                     ),
+
                                   ),
                                 ),
+                                //add space between login and password box
+                                const SizedBox(height: 18,),
                               ],
-                            ),*/
-                      ],
-                    ),//sini login
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Material(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(30),
-                          child: InkWell(
-                            onTap: ()
-                            {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Signup(),
-                                ),
-                              );
-                            },
+                            ),
+                          ),
+                        ],
+                      ),//sini login
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Material(
+                            color: Colors.black,
                             borderRadius: BorderRadius.circular(30),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 28,
-                              ),
-                              child: Text(
-                                "Register ?",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                            child: InkWell(
+                              onTap: ()
+                              {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Signup(),
+                                  ),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(30),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 28,
+                                ),
+                                child: Text(
+                                  "Register ?",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
 
-                        Material(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(30),
-                          child: InkWell(
-                            onTap: ()
-                            {
-                              if(formKey.currentState!.validate()){
-                                _userLogin();
-                              }
-                            },
+                          Material(
+                            color: Colors.black,
                             borderRadius: BorderRadius.circular(30),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 28,
-                              ),
-                              child: Text(
-                                "Login",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                            child: InkWell(
+                              onTap: ()
+                              {
+                                if(formKey.currentState!.validate()){
+                                  _userLogin();
+                                }
+                              },
+                              borderRadius: BorderRadius.circular(30),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 10,
+                                  horizontal: 28,
+                                ),
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Add the "Forgot Password" link
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Forgot Password?"),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ForgotPasswordScreen(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            "Click Here",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.lightBlueAccent,
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  // Add the "Forgot Password" link
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Forgot Password?"),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ForgotPasswordScreen(),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          "Click Here",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.lightBlueAccent,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

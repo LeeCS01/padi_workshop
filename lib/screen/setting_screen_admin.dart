@@ -184,8 +184,7 @@ class _SettingsAdminState extends State<SettingsAdmin> {
                 changePassword();
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // Background color of the button
-                onPrimary: Colors.white, // Text color of the button
+                foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color of the button
               ),
               child: Text('Update Now'),
             ),
@@ -208,7 +207,7 @@ class _SettingsAdminState extends State<SettingsAdmin> {
     };
 
     final response = await http.post(
-      Uri.parse("https://10.131.78.75/sawahcek/updatepass.php"),
+      Uri.parse("https://10.131.73.13/sawahcek/updatepass.php"),
       body: postData,
     );
 

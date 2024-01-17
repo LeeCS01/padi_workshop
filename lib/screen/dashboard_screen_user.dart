@@ -242,7 +242,7 @@ class DashboardUser extends StatelessWidget {
                     CupertinoIcons.thermometer,
                     Colors.blueGrey,
                     context,
-                        (context) =>Reportcentre()),
+                        (context) =>Reportcentre(id: '', username: '',)),
                 itemSettings(context),
               ],
             ),

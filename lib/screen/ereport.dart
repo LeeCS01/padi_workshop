@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:getwidget/getwidget.dart';
 import 'package:sawahcek/screen/newdevicereq.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
+
+
 
 class Ereport extends StatefulWidget {
   @override
@@ -24,10 +30,13 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
   //text field
   TextEditingController descriptionController = TextEditingController();
 
+  File? imageFile;
+  final imagePicker = ImagePicker();
+
   // Get all categories from API
   Future<Null> getData() async {
     final response = await http
-        .post(Uri.parse("http://10.131.78.75/sawahcek/getdevice.php"));
+        .post(Uri.parse("http://10.131.73.13/sawahcek/getdevice.php"));
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         var jsonResult = jsonDecode(response.body);
@@ -42,15 +51,13 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
 
   Future<Null> realtimeupdate() async {
     final response = await http
-        .post(Uri.parse("http://10.131.78.75/sawahcek/realtimeupdate.php"));
+        .post(Uri.parse("http://10.131.73.13/sawahcek/realtimeupdate.php"));
     if (response.statusCode == 200) {
       print("done update");
 
 
     }
   }
-
-
 
   @override
   void initState() {
@@ -61,335 +68,408 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(13, 71, 161, 1.0),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: 450,
-            width: 1300,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(50),
-                bottomLeft: Radius.circular(50),
+      backgroundColor: const Color.fromRGBO(230, 248, 255, 20),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 406,
+              width: 1300,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(40),
+                  bottomLeft: Radius.circular(40),
+                ),
+                color: Color.fromRGBO(21, 127, 193, 20),
               ),
-              color: Colors.blueAccent,
-            ),
-            child: Center(
-              child: Column(
-                children: [
-                  Padding(padding: const EdgeInsets.only(top: 30.0)),
-                  Text(
-                    "REALTIME WATER LEVEL",
-                    style: TextStyle(
-                        color: Colors.white, fontSize: 40, wordSpacing: 10),
-                  ),
-                  Text(
-                    "MONITORING SYSTEM",
-                    style: TextStyle(
-                        color: Colors.white, fontSize: 40, wordSpacing: 10),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.indigo[900],
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
-                        bottomLeft: Radius.circular(30),
-                      ),
+              child: Center(
+                child: Column(
+                  children: [
+                    const Padding(padding: EdgeInsets.only(top: 30.0)),
+                    const Text(
+                      "REALTIME WATER LEVEL",
+                      style: TextStyle(
+                          color: Colors.white, fontSize: 34, wordSpacing: 10),
                     ),
-                    width: 330,
-                    height: 60,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.warning,
-                          color: Colors.white,
-                          size: 50,
-                        ),
-                        Text(
-                          " E-report",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 40,
-                              wordSpacing: 10,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    const Text(
+                      "MONITORING SYSTEM",
+                      style: TextStyle(
+                          color: Colors.white, fontSize: 34, wordSpacing: 10),
                     ),
-                  ),
-                  Padding(padding: const EdgeInsets.only(top: 20.0)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Device :  ",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 30,
-                            wordSpacing: 10,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Container(
-                        width: 225,
-                        height: 50,
-                        child: DropdownButtonFormField(
-                          hint: Text(
-                            "Select Device",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              wordSpacing: 10,
-                            ),
-                          ),
-                          value: selectedDevice,
-                          onChanged: (CategoryData? value) {
-                            setState(() {
-
-                              selectedDevice = value;
-                              DeviceID="${selectedDevice?.cid}";
-                              realtimeupdate();
-                            });
-                          },
-                          items: _categoryData
-                              .map(
-                                (CategoryData cate) =>
-                                DropdownMenuItem<CategoryData>(
-                                  child: Text(cate.cname),
-                                  value: cate,
-                                ),
-                          )
-                              .toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(padding: const EdgeInsets.only(top: 20.0)),
-                  Column(
-                    children: [
-                      GFProgressBar(
-                        percentage: updatescala(),
-                        lineHeight: 45,
-                        width: 450,
-                        alignment: MainAxisAlignment.spaceEvenly,
-                        child: Text(
-                          updatescala().toStringAsFixed(2), // Convert double to String
-                          textAlign: TextAlign.end,
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                        backgroundColor: Colors.black12,
-                        progressBarColor: getProgressBarColor(updatescala()),
-                      ),
-                    ],
-                  ),
-                  // Display selected device details
-                  if (selectedDevice != null)
+                    const SizedBox(height: 10),
                     Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      decoration: BoxDecoration(
+                        color: Colors.indigo[900],
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                          bottomRight: Radius.circular(30),
+                          bottomLeft: Radius.circular(30),
+                        ),
+                      ),
+                      width: 300,
+                      height: 60,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-
-                          Text("${selectedDevice!.level}", style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              wordSpacing: 10,
-                              fontWeight: FontWeight.bold),),
-                          // Add other details as needed
+                          Icon(
+                            Icons.warning,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          Text(
+                            " E-report",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 34,
+                                wordSpacing: 10,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                     ),
-                ],
+                    const Padding(padding: EdgeInsets.only(top: 20.0)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Device :  ",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              wordSpacing: 10,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Container(
+                          width: 225,
+                          height: 50,
+                          child: DropdownButtonFormField(
+                            hint: const Text(
+                              "Select Device",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                wordSpacing: 10,
+                              ),
+                            ),
+                            value: selectedDevice,
+                            onChanged: (CategoryData? value) {
+                              setState(() {
+        
+                                selectedDevice = value;
+                                DeviceID="${selectedDevice?.cid}";
+                                realtimeupdate();
+                              });
+                            },
+                            items: _categoryData
+                                .map(
+                                  (CategoryData cate) =>
+                                  DropdownMenuItem<CategoryData>(
+                                    child: Text(cate.cname),
+                                    value: cate,
+                                  ),
+                            )
+                                .toList(),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 20.0)),
+                    Column(
+                      children: [
+                        Container(
+                          width: 400,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black, // Set your desired border color
+                              width: 2.0, // Set your desired border width
+                            ),
+                            borderRadius: BorderRadius.circular(30.0), // Set your desired border radius
+                          ),
+                          child: GFProgressBar(
+                            percentage: updatescala(),
+                            lineHeight: 50,
+                            width: 345,
+                            alignment: MainAxisAlignment.spaceEvenly,
+                            backgroundColor: Colors.black12,
+                            progressBarColor: getProgressBarColor(updatescala()),
+                            child: Text(
+                              updatescala().toStringAsFixed(2),
+                              textAlign: TextAlign.end,
+                              style: const TextStyle(fontSize: 18, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+        
+        
+                    if (selectedDevice != null)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.update, // You can change this to the desired icon
+                              color: Colors.white,
+                              size: 30.0,
+                            ),
+                            onPressed: () {
+                              realtimeupdate();
+                              Navigator.of(context).pop();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => Ereport(id: widget.id,)),
+                              );
+                            },
+                          ),
+                          if (selectedDevice != null)
+                            Text("Updated by: ${selectedDevice?.lastupdate}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                )),
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Container(
-            height: 20,
-          ),
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 500,
-                  width: 1300,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      if (selectedDevice != null)
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.update, // You can change this to the desired icon
-                                color: Colors.white,
-                                size: 30.0,
-                              ),
-                              onPressed: () {
-                                realtimeupdate();
-                                Navigator.of(context).pop();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => Ereport(id: widget.id,)),
-                                );
-                              },
-                            ),
-                            if (selectedDevice != null)
-                              Text("Updated by: ${selectedDevice?.lastupdate}",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                  )),
-                          ],
-                        ),
-                      Text("Real Time Scale: ${selectedDevice?.level}",style: TextStyle(fontSize: 25, color: Colors.white)),
-                      Text("Water Level: ${selectedDevice?.scala} Meter",style: TextStyle(fontSize: 25, color: Colors.white),),
-
-                      Container(
-                        width: 200,
-                        child: DropdownButtonFormField<String>(
-                          itemHeight: 50,
-                          hint: const Text('Select Type Case',style: TextStyle(fontSize: 20, color: Colors.black)),
-                          value: dropdowntypecase,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdowntypecase = newValue!;
-                            });
-                          },
-                          items: <String>[
-                            'Low Level',
-                            'High Level',
-                            'Device damaged',
-                            'Device lost'
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      Container(
-                        width: 400,
-
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                            bottomRight: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextField(
-                              controller: descriptionController,
-                              maxLines: 4,
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors
-                                      .white), // Set your desired text style
-
-                              decoration: InputDecoration(
-                                labelText: 'Description:',
-                                labelStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20), // Set label text color
-                                contentPadding: EdgeInsets.all(
-                                    16.0), // Add padding around the input area
-
-                                // Add a border and customize its appearance
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                      color: Colors.grey, width: 2.0),
-                                ),
-
-                                // Change the border color when the field is focused
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                      color: Colors.white, width: 2.0),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(padding: const EdgeInsets.only(top: 15.0)),
-                      FloatingActionButton.extended(
-                        label: Text('SUBMIT NOW',style: TextStyle(color: Color.lerp(Colors.blue, Colors.black, 0.8)),), // <-- Text
-                        backgroundColor: Colors.blueAccent,
-                        icon: Container(
-                          width: 45.0,
-                          height: 45.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blue[900],
-
-                          ),
-                          child: Icon(
-                            // <-- Icon
-                            Icons.send,
-                            size: 24.0,
-                            color: Color.lerp(Colors.blue, Colors.black, 0.8),
-                          ),
-                        ),
-                        onPressed: () {
-                          sendDataToDB();
-                        },
-                      ),
-                      Padding(padding: const EdgeInsets.only(top: 15.0)),
-                      FloatingActionButton.extended(
-                        label: Text('REQUEST NEW DEVICE ',style: TextStyle(color: Color.lerp(Colors.blue, Colors.black, 0.8)),), // <-- Text
-                        backgroundColor: Colors.blueAccent,
-                        icon: Container(
-                          width: 45.0,
-                          height: 45.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blue[900],
-
-                          ),
-                          child: Icon(
-                            // <-- Icon
-                            Icons.send,
-                            size: 24.0,
-                            color: Color.lerp(Colors.blue, Colors.black, 0.8),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>NewDeviceReq(id: widget.id,),
-                            ),
-                          );
-
-                        },
-                      ),
-                    ],
-
+            Container(
+              height: 20,
+            ),
+            Container(
+              child: Container(
+                height: 1000,
+                width: 1300,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
                   ),
                 ),
-              ],
+                child: Column(
+                  children: [
+                    Text("Status: ${selectedDevice?.level}",style: TextStyle(fontSize: 25, color: Colors.black)),
+                    Text("Water Level: ${selectedDevice?.scala} Meter",style: TextStyle(fontSize: 25, color: Colors.black),),
+
+                    Container(
+                      width: 200,
+                      child: DropdownButtonFormField<String>(
+                        itemHeight: 50,
+                        hint: const Text('Select Type Case', style: TextStyle(fontSize: 20, color: Colors.black)),
+                        value: dropdowntypecase,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdowntypecase = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          'Low Level',
+                          'High Level',
+                          'Device damaged',
+                          'Device lost'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    const Padding(padding: EdgeInsets.only(top: 20.0)),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Adjust the alignment as needed
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: 400,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(21, 127, 193, 20),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                ),
+                              ),
+                              child: Column (
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextField(
+                                    controller: descriptionController,
+                                    maxLines: 4,
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.white,
+                                    ),
+                                    decoration: InputDecoration(
+                                      labelText: 'Description:',
+                                      labelStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                      ),
+                                      contentPadding: EdgeInsets.all(26.0),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                          width: 2.0,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(20.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent, // Set to transparent color
+                                          width: 2.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 20), // Adjust the spacing between the description column and dotted bar
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              height: 200,
+                              child: InkWell(
+                                onTap: () {
+                                  if (imageFile != null) {
+                                    _showImagePopup();
+                                  }
+                                },
+                                child: DottedBorder(
+                                  borderType: BorderType.RRect,
+                                  radius: const Radius.circular(12),
+                                  color: Colors.blueGrey,
+                                  strokeWidth: 1,
+                                  dashPattern: const [8, 8],
+                                  child: SizedBox.expand(
+                                    child: FittedBox(
+                                      child: imageFile != null
+                                          ? Image.file(File(imageFile!.path), fit: BoxFit.cover)
+                                          : const Icon(
+                                        Icons.image_outlined,
+                                        color: Colors.blueGrey,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(40, 40, 40, 10),
+                      child: Material(
+                        elevation: 3,
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          width: size.width,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.blueGrey,
+                          ),
+                          child: Material(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.transparent,
+                            child: InkWell(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () {
+                                showPictureDialog();
+                              },
+                              child: const Center(
+                                child: Text(
+                                  'Take a Picture',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Padding(padding: const EdgeInsets.only(top: 15.0)),
+
+                    FloatingActionButton.extended(
+                      label: Text('SUBMIT NOW',style: TextStyle(color: Color.lerp(Colors.blue, Colors.black, 0.8)),), // <-- Text
+                      backgroundColor: const Color.fromRGBO(21, 127, 193, 20),
+                      icon: Container(
+                        width: 45.0,
+                        height: 45.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue[900],
+
+                        ),
+                        child: Icon(
+                          // <-- Icon
+                          Icons.send,
+                          size: 24.0,
+                          color: Color.lerp(Colors.blue, Colors.black, 0.8),
+                        ),
+                      ),
+                      onPressed: () {
+                        sendDataToDB();
+                      },
+                    ),
+
+                    Padding(padding: const EdgeInsets.only(top: 15.0)),
+
+                    FloatingActionButton.extended(
+                      label: Text('REQUEST NEW DEVICE ',style: TextStyle(color: Color.lerp(Colors.blue, Colors.black, 0.8)),), // <-- Text
+                      backgroundColor: const Color.fromRGBO(21, 127, 193, 20),
+                      icon: Container(
+                        width: 45.0,
+                        height: 45.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue[900],
+
+                        ),
+                        child: Icon(
+                          // <-- Icon
+                          Icons.send,
+                          size: 24.0,
+                          color: Color.lerp(Colors.blue, Colors.black, 0.8),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>NewDeviceReq(id: widget.id,),
+                          ),
+                        );
+
+                      },
+                    ),
+                  ],
+
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -398,6 +478,80 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
         child: Icon(Icons.arrow_back),
       ),
     );
+  }
+
+  Future<void> showPictureDialog() async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: const Text('Select Action'),
+          children: [
+            SimpleDialogOption(
+              onPressed: () {
+                getFromCamera();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Open Camera'),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                getFromGallery();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Open Gallery'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showImagePopup() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SizedBox.expand(
+            child: Image.file(File(imageFile!.path), fit: BoxFit.contain),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  getFromGallery() async {
+    final pickedFile = await imagePicker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  getFromCamera() async {
+    final pickedFile = await imagePicker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
   }
 
   double updatescala() {
@@ -418,84 +572,63 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
   Future<void> sendDataToDB() async {
     print(FarmerID);
 
-    Map<String, dynamic> postData = {
-      'TypeCase': dropdowntypecase!,
-      'Details': descriptionController.text,
-      'FarmerID': FarmerID,
-      'DeviceID': selectedDevice!.cid,
-
-    };
-
-    final response = await http.post(
-      Uri.parse("http://10.131.78.75/sawahcek/insertcase.php"),
-      body: postData,
+    // Create a new multipart request
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("http://10.131.73.13/sawahcek/insertcase.php"),
     );
 
+    // Add form data
+    request.fields['TypeCase'] = dropdowntypecase!;
+    request.fields['Details'] = descriptionController.text;
+    request.fields['FarmerID'] = FarmerID;
+    request.fields['DeviceID'] = selectedDevice!.cid;
 
-
-    if (response.statusCode == 200) {
-      print("Server response: ${response.body}");
-      // Handle successful response, e.g., show a success message
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Success"),
-            content: Text("Data submitted successfully"),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
+    // Add the image file
+    if (imageFile != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'image', // Make sure this matches the name attribute in your PHP script
+          imageFile!.path,
+        ),
       );
+    }
 
-    } else {
-      // Handle error response, e.g., show an error message
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Error"),
-            content: Text("Failed to submit data. Please try again."),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+    try {
+      // Send the request
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print("Server response: ${await response.stream.bytesToString()}");
+        // Handle successful response, e.g., show a success message
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Success"),
+              content: Text("Data submitted successfully"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        // Handle error response, e.g., show an error message
+        print("Error: ${response.statusCode}");
+      }
+    } catch (error) {
+      print("Error: $error");
     }
   }
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 Color getProgressBarColor(double value) {
   if (value < 0.15) {

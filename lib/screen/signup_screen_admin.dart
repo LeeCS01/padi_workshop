@@ -30,25 +30,6 @@ class _SignupAdminState extends State<SignupAdmin> {
   var isObsecure = true.obs;
   var formKey = GlobalKey<FormState>();
 
-  // List<String> statesInMalaysia = [
-  //   'Johor',
-  //   'Kedah',
-  //   'Kelantan',
-  //   'Melaka',
-  //   'Negeri Sembilan',
-  //   'Pahang',
-  //   'Penang',
-  //   'Perak',
-  //   'Perlis',
-  //   'Sabah',
-  //   'Sarawak',
-  //   'Selangor',
-  //   'Terengganu',
-  //   'Wilayah Persekutuan Kuala Lumpur',
-  //   'Wilayah Persekutuan Labuan',
-  //   'Wilayah Persekutuan Putrajaya',
-  // ];
-
   void _addUser() async {
     try{
       String fullname = fullnameController.text.trim();

@@ -27,7 +27,7 @@ class _WLState extends State<WL> with SingleTickerProviderStateMixin {
   Future<Null> getData() async {
     clearData();
     final response = await http
-        .post(Uri.parse("http://10.131.78.75/sawahcek/getdevice.php"));
+        .post(Uri.parse("http://10.131.73.13/sawahcek/getdevice.php"));
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         var jsonResult = jsonDecode(response.body);
@@ -42,7 +42,7 @@ class _WLState extends State<WL> with SingleTickerProviderStateMixin {
 
   Future<Null> realtimeupdate() async {
     final response = await http
-        .post(Uri.parse("http://10.131.78.75/sawahcek/realtimeupdate.php"));
+        .post(Uri.parse("http://10.131.73.13/sawahcek/realtimeupdate.php"));
     if (response.statusCode == 200) {
       print("done update");
 
@@ -414,7 +414,7 @@ class _WLState extends State<WL> with SingleTickerProviderStateMixin {
     };
 
     final response = await http.post(
-      Uri.parse("http://10.131.78.75/sawahcek/insertcase.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/insertcase.php"),
       body: postData,
     );
 

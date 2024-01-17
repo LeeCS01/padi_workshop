@@ -153,8 +153,7 @@ class _NewDeviceReqState extends State<NewDeviceReq> {
 
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // Background color of the button
-                onPrimary: Colors.white, // Text color of the button
+                foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color of the button
               ),
               child: Text('Submit Now'),
             ),
@@ -189,7 +188,7 @@ class _NewDeviceReqState extends State<NewDeviceReq> {
     };
 
     final response = await http.post(
-      Uri.parse("http://10.131.78.75/sawahcek/newdevicereq.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/newdevicereq.php"),
       body: postData,
     );
 

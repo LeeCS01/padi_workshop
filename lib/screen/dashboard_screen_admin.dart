@@ -222,7 +222,7 @@ class DashboardAdmin extends StatelessWidget {
                     CupertinoIcons.thermometer,
                     Colors.blueGrey,
                     context,
-                        (context) => AdminReportcentre()),
+                        (context) => AdminReportcentre(id: '',)),
                 itemSettings(context),
               ],
             ),
