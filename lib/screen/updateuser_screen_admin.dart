@@ -22,7 +22,7 @@ class _UserlistState extends State<Userlist> {
 
   Future<List?> sendDataToServer() async {
     final response = await http.get(
-      Uri.parse("http://10.131.73.60/sawahcek/getuser.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/getuser.php"),
     );
     return json.decode(response.body);
   }
@@ -67,7 +67,7 @@ class ItemList extends StatelessWidget {
   Future<void> deleteDevice(
       BuildContext context, String id, int index) async {
     final response = await http.post(
-      Uri.parse("http://10.131.73.60/sawahcek/deleteuser.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/deleteuser.php"),
       body: {"id": id},
     );
 
@@ -110,6 +110,7 @@ class ItemList extends StatelessWidget {
           },
 
           child: Container(
+
             padding: const EdgeInsets.all(10.0),
             child: Card(
               child: ListTile(

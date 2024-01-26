@@ -105,11 +105,6 @@ class _DeviceState extends State<Device> {
                   value: 'option1',
                   child: Text('List Of Devices'),
                 ),
-                const PopupMenuItem<String>(
-                  value: 'option2',
-                  child: Text('Delete Existing Dam'),
-                ),
-
                 // Add more options as needed
               ],
             ),
@@ -406,7 +401,7 @@ class _DeviceState extends State<Device> {
                                 Icons.vertical_align_bottom_rounded,
                                 color: Colors.black,
                               ),
-                              hintText: "Short name for location...",
+                              hintText: "Depth of the location...",
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30),
                                   borderSide: const BorderSide(

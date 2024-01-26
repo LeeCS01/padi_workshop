@@ -33,7 +33,7 @@ class _WlreportuserState extends State<Wlreportuser> {
 
   Future<List?> sendDataToServer() async {
     final response = await http.post(
-      Uri.parse("http://10.131.73.60/sawahcek/getdevice.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/getdevice.php"),
     );
 
     return json.decode(response.body);

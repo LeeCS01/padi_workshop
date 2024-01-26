@@ -4,8 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sawahcek/screen/login_screen.dart';
+import 'package:sawahcek/screen/notiflist_screen_admin.dart';
 import 'package:sawahcek/screen/signup_screen_admin.dart';
 import 'package:sawahcek/screen/setting_screen_admin.dart';
+import 'package:sawahcek/screen/updateuser_screen_admin.dart';
 
 class ProfileAdmin extends StatefulWidget {
   final String id;
@@ -93,7 +95,7 @@ class _ProfileAdminState extends State<ProfileAdmin> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SignupAdmin(), // Navigate to SignupAdmin
+                      builder: (context) =>  Userlist(), // Navigate to SignupAdmin
                     ),
                   );
                 }
@@ -101,11 +103,20 @@ class _ProfileAdminState extends State<ProfileAdmin> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SettingsAdmin( id: widget.id.toString(),
+
+                      builder: (context) => Notiflist(),// Navigate to SignupAdmin
+                    ),
+                  );
+                }
+                else if (value == 'option4') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsAdmin(  id: widget.id.toString(),
                         fullname: widget.fullname,
                         username: widget.username,
                         email: widget.email,
-                        password: widget.password,), // Navigate to SignupAdmin
+                        password: widget.password, ), // Navigate to SignupAdmin
                     ),
                   );
                 }
@@ -118,10 +129,14 @@ class _ProfileAdminState extends State<ProfileAdmin> {
                 ),
                 const PopupMenuItem<String>(
                   value: 'option2',
-                  child: Text('Delete Existing Dam'),
+                  child: Text('Manage User'),
                 ),
                 const PopupMenuItem<String>(
                   value: 'option3',
+                  child: Text('Manage Notification'),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'option4',
                   child: Text('Admin Settings'),
                 ),
                 // Add more options as needed
@@ -321,7 +336,9 @@ class _ProfileAdminState extends State<ProfileAdmin> {
 
   void uploadSelectedImageToServer(String userEmail) async {
     if (selectedImage != null) {
+
       String uploadUrl = "http://10.131.73.13/sawahcek/upload.php"; // Replace with your actual server URL
+
 
       var request = http.MultipartRequest('POST', Uri.parse(uploadUrl));
       request.files
@@ -344,11 +361,20 @@ class _ProfileAdminState extends State<ProfileAdmin> {
   }
 
   Future<void> fetchProfilePicture() async {
+
+
+    if (!mounted) return;  // Check if the widget is still active
+
     String apiUrl = "http://10.131.73.13/sawahcek/upload.php"; // Replace with your actual server URL
+
     String userEmail = widget.email; // Use the email from the widget
 
     try {
       var response = await http.get(Uri.parse('$apiUrl?email=$userEmail'));
+
+
+      if (!mounted) return;  // Check if the widget is still active
+
 
       if (response.statusCode == 200) {
         if (response.body.isNotEmpty) {
@@ -368,4 +394,5 @@ class _ProfileAdminState extends State<ProfileAdmin> {
       print("Error fetching profile picture: $e");
     }
   }
+
 }

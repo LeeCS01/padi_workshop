@@ -25,7 +25,7 @@ class _NotiflistState extends State<Notiflist> {
 
   Future<List?> sendDataToServer() async {
     final response = await http.get(
-      Uri.parse("http://10.131.73.60/sawahcek/getnotifdevice_admin.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/getnotifdevice_admin.php"),
     );
     return json.decode(response.body);
   }
@@ -70,7 +70,7 @@ class ItemList extends StatelessWidget {
   Future<void> deleteNotif(
       BuildContext context, String NotifID, int index) async {
     final response = await http.post(
-      Uri.parse("http://10.131.73.60/sawahcek/deleteNotif_admin.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/deleteNotif_admin.php"),
       body: {"NotifID": NotifID},
     );
 

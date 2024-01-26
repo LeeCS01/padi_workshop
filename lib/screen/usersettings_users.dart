@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
+import 'package:sawahcek/screen/dashboard.dart';
+
+class usersettings extends StatefulWidget {
+  @override
+  _usersettingsState createState() => _usersettingsState();
 
 
-
-class SettingsUser extends StatefulWidget {
 
   final String id;
   final String fullname;
@@ -12,37 +16,35 @@ class SettingsUser extends StatefulWidget {
   final String email;
   final String password;
 
-  SettingsUser({
+  usersettings({
     required this.id,
     required this.fullname,
     required this.username,
     required this.email,
     required this.password,
   });
-
-  @override
-  _SettingsUserState createState() => _SettingsUserState();
 }
 
-class _SettingsUserState extends State<SettingsUser> {
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController userEmailController = TextEditingController();
-  TextEditingController userPasswordController = TextEditingController();
-  TextEditingController userPhoneController = TextEditingController();
-  TextEditingController userAddressController = TextEditingController();
+class _usersettingsState extends State<usersettings> {
+  TextEditingController fullnameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+//  TextEditingController addressController = TextEditingController();
+  //TextEditingController phoneController = TextEditingController();
 
 
-  @override
   void initState() {
     super.initState();
+    getData();
+   emailController.text = widget.id;
+    fullnameController.text = widget.fullname;
+    usernameController.text = widget.username;
+    passController.text = widget.password;
 
-    // Initialize controllers with widget values
-    fullNameController.text = widget.fullname;
-    userNameController.text = widget.username;
-    userEmailController.text = widget.email;
-    userPasswordController.text = widget.password;
+
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,11 +56,28 @@ class _SettingsUserState extends State<SettingsUser> {
         padding: const EdgeInsets.all(30.0),
         child: Column(
           children: <Widget>[
-            SizedBox(height: 10), // Adjust the height according to your preference
+            SizedBox(height: 20), // Adjust the height according to your preference
             TextField(
-              controller: fullNameController,
-              readOnly: true, // Set to true to make it non-editable
-              enabled: false,
+              controller: usernameController,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: 'Username',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black), // You can change the border color
+                  borderRadius: BorderRadius.circular(10.0), // You can adjust the border radius
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black), // You can change the border color
+                  borderRadius: BorderRadius.circular(10.0), // You can adjust the border radius
+                ),
+              ),
+            ),
+
+            SizedBox(height: 20), // Adjust the height according to your preference
+            TextField(
+              controller: fullnameController,
               decoration: InputDecoration(
                 labelText: 'Full Name',
                 filled: true,
@@ -73,13 +92,11 @@ class _SettingsUserState extends State<SettingsUser> {
                 ),
               ),
             ),
-            SizedBox(height: 10), // Adjust the height according to your preference
-            TextField(
-              controller: userNameController,
-              readOnly: true, // Set to true to make it non-editable
-              enabled: false,
+            SizedBox(height: 20),
+           /* TextField(
+              controller:addressController,
               decoration: InputDecoration(
-                labelText: 'User Name',
+                labelText: 'Address',
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
@@ -93,11 +110,29 @@ class _SettingsUserState extends State<SettingsUser> {
               ),
             ),
 
-            SizedBox(height: 10), // Adjust the height according to your preference
+            SizedBox(height: 20),
             TextField(
-              controller: userEmailController,
+              controller: phoneController,
               decoration: InputDecoration(
-                labelText: 'Email',
+                labelText: 'Contact Number',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black), // You can change the border color
+                  borderRadius: BorderRadius.circular(10.0), // You can adjust the border radius
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black), // You can change the border color
+                  borderRadius: BorderRadius.circular(10.0), // You can adjust the border radius
+                ),
+              ),
+            ),*/
+
+            SizedBox(height: 20),
+            TextField(
+              controller: passController,
+              decoration: InputDecoration(
+                labelText: 'Password',
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
@@ -111,11 +146,11 @@ class _SettingsUserState extends State<SettingsUser> {
               ),
             ),
 
-            SizedBox(height: 10), // Adjust the height according to your preference
-            TextField(
-              controller: userPasswordController,
+            SizedBox(height: 20),
+         /*   TextField(
+              controller: emailController,
               decoration: InputDecoration(
-                labelText: 'User Password',
+                labelText: 'Email Address',
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
@@ -127,53 +162,17 @@ class _SettingsUserState extends State<SettingsUser> {
                   borderRadius: BorderRadius.circular(10.0), // You can adjust the border radius
                 ),
               ),
-            ),
-
-            SizedBox(height: 10), // Adjust the height according to your preference
-            TextField(
-              controller: userAddressController,
-              decoration: InputDecoration(
-                labelText: 'User Address',
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black), // You can change the border color
-                  borderRadius: BorderRadius.circular(10.0), // You can adjust the border radius
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black), // You can change the border color
-                  borderRadius: BorderRadius.circular(10.0), // You can adjust the border radius
-                ),
-              ),
-            ),
-              SizedBox(height: 10), // Adjust the height according to your preference
-            TextField(
-              controller: userPhoneController,
-              decoration: InputDecoration(
-                labelText: 'Phone Number',
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black), // You can change the border color
-                  borderRadius: BorderRadius.circular(10.0), // You can adjust the border radius
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black), // You can change the border color
-                  borderRadius: BorderRadius.circular(10.0), // You can adjust the border radius
-                ),
-              ),
-            ),
-            SizedBox(height: 10), // Adjust the height according to your preference
-
-// Adjust the height according to your preference
+            ),*/
+            SizedBox(height: 20), // Adjust the height according to your preference
             ElevatedButton(
               onPressed: () {
-                changePassword();
+                sendDataToServer();
+
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color of the button
               ),
-              child: Text('Update Now'),
+              child: Text('Submit Now'),
             ),
 
           ],
@@ -181,23 +180,75 @@ class _SettingsUserState extends State<SettingsUser> {
       ),
     );
   }
-  Future<void> changePassword() async {
 
-    print(userEmailController.text);
-    print(userPasswordController.text);
+
+  Future<Map<String, dynamic>?> getData() async {
+    print(widget.id);
+
+    // Assuming widget.id is a String
 
     Map<String, dynamic> postData = {
+      'email': widget.id,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse("http://10.131.73.13/sawahcek/getuser.php"),
+        body: postData,
+      );
+
+      // Check if the response status code is 200 OK
+      if (response.statusCode == 200) {
+        dynamic decodedData = json.decode(response.body);
+
+        // Check if the decoded data is a list
+        if (decodedData is List) {
+          // Handle list data here, if needed
+          print("Received a list, but expected a map");
+          return null;  // or handle it accordingly
+        }
+
+        // Assuming decodedData is a map
+        Map<String, dynamic> responseData = decodedData;
+
+        print( responseData['fullname']);
+        fullnameController = responseData['fullname'];
+        //addressController = responseData['address'];
+        usernameController = responseData['username'];
+        passController = responseData['password'];
+        //phoneController = responseData['phone'];
+
+        // Return the decoded response data
+        return responseData;
+      } else {
+        // If the response status code is not 200 OK, handle the error accordingly
+        print("Error: ${response.statusCode}");
+        return null; // or throw an exception
+      }
+    } catch (error) {
+      // Handle exceptions that may occur during the HTTP request
+      print("Exception: $error");
+      return null; // or throw an exception
+    }
+  }
+
+
+  Future<void> sendDataToServer() async {
+
+    Map<String, dynamic> postData = {
+
       //-------------------------------------------------------
-      'email' :userEmailController.text ,
-      'password' :userPasswordController.text ,
-      'phone':userPhoneController.text,
-      'address':userAddressController.text,
+      'fullname' :fullnameController.text ,
+      'username' :usernameController.text ,
+      'email' :emailController.text ,
+     // 'phone' :phoneController.text ,
+      //'address' :addressController.text,
+      'password' :passController.text ,
+
     };
 
     final response = await http.post(
-
-      Uri.parse("https://10.131.73.13/sawahcek/updatepass.php"),
-
+      Uri.parse("http://10.131.73.13/sawahcek/updatepass.php"),
       body: postData,
     );
 
@@ -209,7 +260,7 @@ class _SettingsUserState extends State<SettingsUser> {
         builder: (context) {
           return AlertDialog(
             title: Text("Success"),
-            content: Text("Data has been insert"),
+            content: Text("Data has been updated"),
 
             actions: <Widget>[
               TextButton(
@@ -245,6 +296,4 @@ class _SettingsUserState extends State<SettingsUser> {
       );
     }
   }
-
 }
-

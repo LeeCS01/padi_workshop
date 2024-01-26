@@ -26,7 +26,7 @@ class _DevicelistState extends State<Devicelist> {
 
   Future<List?> sendDataToServer() async {
     final response = await http.get(
-      Uri.parse("http://10.131.73.60/sawahcek/getdevice.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/getdevice.php"),
     );
     return json.decode(response.body);
   }
@@ -74,7 +74,7 @@ class ItemList extends StatelessWidget {
   Future<void> deleteDevice(
       BuildContext context, String deviceID, int index) async {
     final response = await http.post(
-      Uri.parse("http://10.131.73.60/sawahcek/deletedevice.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/deletedevice.php"),
       body: {"DeviceID": deviceID},
     );
 

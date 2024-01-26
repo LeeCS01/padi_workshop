@@ -28,8 +28,7 @@ class _SettingsAdminState extends State<SettingsAdmin> {
   TextEditingController userNameController = TextEditingController();
   TextEditingController userEmailController = TextEditingController();
   TextEditingController userPasswordController = TextEditingController();
-  //TextEditingController userPhoneController = TextEditingController();
-  //TextEditingController userAddressController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -181,7 +180,7 @@ class _SettingsAdminState extends State<SettingsAdmin> {
             SizedBox(height: 10), // Adjust the height according to your preference
             ElevatedButton(
               onPressed: () {
-                changePassword();
+                sendDataToServer();
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.blue, // Text color of the button
@@ -194,20 +193,28 @@ class _SettingsAdminState extends State<SettingsAdmin> {
       ),
     );
   }
-  Future<void> changePassword() async {
 
-    print(userEmailController.text);
-    print(userPasswordController.text);
+
+  Future<void> sendDataToServer() async {
+
+
     Map<String, dynamic> postData = {
 
       //-------------------------------------------------------
+      'fullname' :fullNameController.text ,
+      'username' :userNameController.text ,
       'email' :userEmailController.text ,
       'password' :userPasswordController.text ,
 
     };
 
+    print(fullNameController.text );
+    print(userPasswordController.text ); print(userNameController.text ); print(userEmailController.text );
+
+
+
     final response = await http.post(
-      Uri.parse("https://10.131.73.13/sawahcek/updatepass.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/updatepass.php"),
       body: postData,
     );
 
@@ -219,7 +226,7 @@ class _SettingsAdminState extends State<SettingsAdmin> {
         builder: (context) {
           return AlertDialog(
             title: Text("Success"),
-            content: Text("Data has been insert"),
+            content: Text("Data has been updated"),
 
             actions: <Widget>[
               TextButton(

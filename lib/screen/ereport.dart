@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:getwidget/getwidget.dart';
 import 'package:sawahcek/screen/newdevicereq.dart';
@@ -13,18 +14,32 @@ import 'dart:io';
 class Ereport extends StatefulWidget {
   @override
   _EreportState createState() => _EreportState();
+
+
+  final List? list;
+  final int? index;
   final String id;
+  final String userid;
+
 
   Ereport({
+
+    required this.list,
+    required this.index,
     required this.id,
+    required this.userid,
   });
 
 }
+
 
 class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
   List<CategoryData> _categoryData = [];
   late String FarmerID;
   String DeviceID=" ";
+  String locationName=" ";
+  String wlstatus=" ";
+  String level=" ";
   CategoryData? selectedDevice;
   String? dropdowntypecase;
   //text field
@@ -33,10 +48,12 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
   File? imageFile;
   final imagePicker = ImagePicker();
 
+
   // Get all categories from API
   Future<Null> getData() async {
     final response = await http
         .post(Uri.parse("http://10.131.73.13/sawahcek/getdevice.php"));
+
     if (response.statusCode == 200) {
       if (response.body.isNotEmpty) {
         var jsonResult = jsonDecode(response.body);
@@ -49,21 +66,19 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
     }
   }
 
-  Future<Null> realtimeupdate() async {
-    final response = await http
-        .post(Uri.parse("http://10.131.73.13/sawahcek/realtimeupdate.php"));
-    if (response.statusCode == 200) {
-      print("done update");
 
-
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    FarmerID = widget.id;
+    FarmerID = widget.userid;
+    locationName=widget.list![widget.index!]['slname'];
     getData();
+    updatescala();
+   DeviceID = widget.list![widget.index!]['DeviceID'];
+    dropdowntypecase = widget.list![widget.index!]['RealTimeStatus'];
+    wlstatus = widget.list![widget.index!]['RealTimeStatus'];
+    level=widget.list![widget.index!]['RealTimeScala'];
   }
 
   @override
@@ -77,7 +92,7 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: 406,
+              height: 390,
               width: 1300,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -93,12 +108,12 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
                     const Text(
                       "REALTIME WATER LEVEL",
                       style: TextStyle(
-                          color: Colors.white, fontSize: 34, wordSpacing: 10),
+                          color: Colors.white, fontSize: 30, wordSpacing: 0,fontWeight: FontWeight.bold),
                     ),
                     const Text(
                       "MONITORING SYSTEM",
                       style: TextStyle(
-                          color: Colors.white, fontSize: 34, wordSpacing: 10),
+                          color: Colors.white, fontSize: 30, wordSpacing: 0,fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
                     Container(
@@ -111,7 +126,7 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
                           bottomLeft: Radius.circular(30),
                         ),
                       ),
-                      width: 300,
+                      width: 250,
                       height: 60,
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -145,37 +160,45 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
                               fontWeight: FontWeight.bold),
                         ),
                         Container(
-                          width: 225,
+                          width: 250,
                           height: 50,
                           child: DropdownButtonFormField(
-                            hint: const Text(
-                              "Select Device",
+
+                            hint: Text(
+                              locationName,
+
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
                                 wordSpacing: 10,
                               ),
                             ),
-                            value: selectedDevice,
+
+                            value:selectedDevice,
                             onChanged: (CategoryData? value) {
                               setState(() {
-        
                                 selectedDevice = value;
-                                DeviceID="${selectedDevice?.cid}";
-                                realtimeupdate();
+                                locationName="${selectedDevice?.cname}";
+                                DeviceID = "${selectedDevice?.cid}";
+                                dropdowntypecase="${selectedDevice?.level}";
+                                wlstatus="${selectedDevice?.level}";
+                                level="${selectedDevice?.scala}";
+
                               });
                             },
                             items: _categoryData
                                 .map(
-                                  (CategoryData cate) =>
-                                  DropdownMenuItem<CategoryData>(
-                                    child: Text(cate.cname),
-                                    value: cate,
-                                  ),
+
+                                  (CategoryData cate) => DropdownMenuItem<CategoryData>(
+                                child: Text(cate.cname),
+                                value: cate,
+                              ),
                             )
                                 .toList(),
                           ),
+
                         ),
+
                       ],
                     ),
                     const Padding(padding: EdgeInsets.only(top: 20.0)),
@@ -196,39 +219,20 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
                             width: 345,
                             alignment: MainAxisAlignment.spaceEvenly,
                             backgroundColor: Colors.black12,
-                            progressBarColor: getProgressBarColor(updatescala()),
-                            child: Text(
-                              updatescala().toStringAsFixed(2),
-                              textAlign: TextAlign.end,
-                              style: const TextStyle(fontSize: 18, color: Colors.white),
-                            ),
+
+                            progressBarColor: getProgressBarColor(wlstatus),
+
                           ),
                         ),
                       ],
                     ),
-        
-        
-                    if (selectedDevice != null)
+                      SizedBox(height: 10,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.update, // You can change this to the desired icon
-                              color: Colors.white,
-                              size: 30.0,
-                            ),
-                            onPressed: () {
-                              realtimeupdate();
-                              Navigator.of(context).pop();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Ereport(id: widget.id,)),
-                              );
-                            },
-                          ),
-                          if (selectedDevice != null)
-                            Text("Updated by: ${selectedDevice?.lastupdate}",
+
+                            Text("Updated by: ${selectedDevice?.lastupdate ??widget.list?[widget.index!]['LastUpdate']}",
+
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
@@ -254,14 +258,19 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
                 ),
                 child: Column(
                   children: [
-                    Text("Status: ${selectedDevice?.level}",style: TextStyle(fontSize: 25, color: Colors.black)),
-                    Text("Water Level: ${selectedDevice?.scala} Meter",style: TextStyle(fontSize: 25, color: Colors.black),),
+
+                    Text("Status: ${wlstatus}",style: TextStyle(fontSize: 20, color: Colors.black)),
+                    Text("DeviceID: ${widget.list![widget.index!]['DeviceID']}",style: TextStyle(fontSize: 20, color: Colors.black)),
+                    Text("slname: ${widget.list![widget.index!]['slname']}",style: TextStyle(fontSize: 20, color: Colors.black)),
+                    Text("Water Level: ${level} Meter",style: TextStyle(fontSize: 20, color: Colors.black),),
 
                     Container(
-                      width: 200,
+                      width: 300,
+                      height: 90,
                       child: DropdownButtonFormField<String>(
                         itemHeight: 50,
-                        hint: const Text('Select Type Case', style: TextStyle(fontSize: 20, color: Colors.black)),
+                        hint: const Text('Select Recorded Status', style: TextStyle(fontSize: 20, color: Colors.black)),
+
                         value: dropdowntypecase,
                         onChanged: (String? newValue) {
                           setState(() {
@@ -270,9 +279,12 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
                         },
                         items: <String>[
                           'Low Level',
+                          'Normal Level',
                           'High Level',
-                          'Device damaged',
-                          'Device lost'
+                          'Device Damaged',
+                          'Device Lost',
+                          // Add your other status values here
+
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -281,6 +293,7 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
                         }).toList(),
                       ),
                     ),
+
                     const Padding(padding: EdgeInsets.only(top: 20.0)),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -429,8 +442,32 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
                         ),
                       ),
                       onPressed: () {
-                        sendDataToDB();
+
+                        if (selectedDevice == null) {
+                          // Handle the case when no device is selected
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Error"),
+                                content: Text("Please select a device."),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                         } else {
+                          sendDataToDB();
+                        }
                       },
+
+
                     ),
 
                     Padding(padding: const EdgeInsets.only(top: 15.0)),
@@ -478,7 +515,11 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
         child: Icon(Icons.arrow_back),
       ),
     );
+
+
+
   }
+
 
   Future<void> showPictureDialog() async {
     await showDialog<void>(
@@ -555,27 +596,40 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
   }
 
   double updatescala() {
-    double? scalaValue = double.tryParse(selectedDevice?.scala ?? '');
+
+    //print(data.isNotEmpty ? data[0]['RealTimeScala'] + " Meter" : getNewDataAndUpdateUI());
+
+    double? scalaValue = double.tryParse( selectedDevice?.scala ?? widget.list?[widget.index!]['RealTimeScala'] );
 
     if (scalaValue != null) {
-      // Use scalaValue for calculations
-      double result = scalaValue; // Replace this line with your actual calculation
-      result = (result/2);
-      print(result.toStringAsFixed(2));
+      double result =
+          scalaValue / double.tryParse(selectedDevice?.depth ??widget.list?[widget.index!]['Depth'])!;
+
+      if (result > 1.0) {
+        result = 1.0;
+      }
+
+
       return result;
     } else {
-      // Handle the case where selectedDevice!.scala is not a valid double
+
+
       return 0.0;
     }
   }
 
   Future<void> sendDataToDB() async {
-    print(FarmerID);
+    FarmerID=widget.userid;
+
+
+
+
 
     // Create a new multipart request
     var request = http.MultipartRequest(
       'POST',
       Uri.parse("http://10.131.73.13/sawahcek/insertcase.php"),
+
     );
 
     // Add form data
@@ -630,15 +684,19 @@ class _EreportState extends State<Ereport> with SingleTickerProviderStateMixin {
 
 }
 
-Color getProgressBarColor(double value) {
-  if (value < 0.15) {
-    return Colors.green;
-  } else if (value > 0.15 && value < 0.35) {
-    return Colors.yellow;
-  } else  {
+
+Color getProgressBarColor(String value) {
+  if (value == "Low Level") {
     return Colors.red;
-  }
+  } else if (value == "Normal Level") {
+    return Colors.yellow;
+  } else if(value == "High Level"){
+    return Colors.green;
+  }else
+    return Colors.black;
 }
+
+
 
 class ItemList extends StatelessWidget {
   final List<CategoryData> list;
@@ -655,19 +713,23 @@ class ItemList extends StatelessWidget {
 class CategoryData {
   var cid;
   var cname;
+  var location;
   var scala;
   var lastupdate;
   var level;
+  var depth;
 
-  CategoryData({this.cid, this.cname, this.scala, this.lastupdate,this.level});
+  CategoryData({this.cid, this.cname, this.location,this.scala, this.lastupdate,this.level,this.depth});
 
   factory CategoryData.fromJson(Map<dynamic, dynamic> json) {
     return CategoryData(
       cid: json['DeviceID'],
-      cname: json['Location'],
+      cname: json['slname'],
+      location: json['Location'],
       scala: json['RealTimeScala'],
       lastupdate: json['LastUpdate'],
       level: json['RealTimeStatus'],
+      depth: json['Depth'],
     );
   }
 }

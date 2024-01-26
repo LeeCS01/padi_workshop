@@ -1,58 +1,33 @@
 import 'dart:convert';
+import 'package:sawahcek/screen/detailadminreportcentre.dart';
 import 'package:sawahcek/screen/detailonprogress.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class Reportcentre extends StatefulWidget {
-  final String id;
-  final String username;
+class AdminReportcentre extends StatefulWidget {
 
-  Reportcentre({
+  final String id;
+
+  AdminReportcentre({
     required this.id,
-    required this.username,
   });
 
-
   @override
-  _ReportcentreState createState() => _ReportcentreState();
+  _AdminReportcentreState createState() => _AdminReportcentreState();
 }
 
-class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderStateMixin {
+class _AdminReportcentreState extends State<AdminReportcentre> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   //list array
-
   List? Qlist = [];
   List? OnList=[];
   List? DoneList=[];
-
-
-  Future<List?> sendDataToServer() async {
-    Map<String, dynamic> postData = {
-      'TargetUser': widget.id,
-    };
-
-    final response = await http.post(
-      Uri.parse("http://10.131.73.13/sawahcek/getnotifdevice.php"),
-      body: postData,
-    );
-
-    return json.decode(response.body);
-  }
-
-
+  late String AdminId;
 
 
   //Data Diambil Qlist
   Future<List?> getQlist() async {
-    Map<String, dynamic> postData = {
-      'FarmerID': widget.id,
-    };
-
-    final response = await http.post(
-      Uri.parse("http://10.131.73.13/sawahcek/getdatareqaduan.php"),
-      body: postData,
-    );
-
+    final response = await http.get(Uri.parse("http://10.131.73.13/sawahcek/getdatareqaduan_admin.php"));
     return json.decode(response.body);
   }
 
@@ -60,30 +35,16 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
 //---------------------------------------------------------------------------------------------------
   //Data Diambil Onlist
   Future<List?> getOnlist() async {
-    Map<String, dynamic> postData = {
-      'FarmerID': widget.id,
-    };
-
-    final response = await http.post(
-      Uri.parse("http://10.131.73.13/sawahcek/getdataonprogress.php"),
-      body: postData,
-    );
-
+    final response = await http.get(Uri.parse("http://10.131.73.13/sawahcek/getdataonprogress_admin.php"));
     return json.decode(response.body);
   }
+  
 
 
 //---------------------------------------------------------------------------------------------------
   //Data Diambil Onlist
   Future<List?> getDonelist() async {
-    Map<String, dynamic> postData = {
-      'FarmerID': widget.id,
-    };
-
-    final response = await http.post(
-      Uri.parse("http://10.131.73.13/sawahcek/getdatadone.php"),
-      body: postData,
-    );
+    final response = await http.get(Uri.parse("http://10.131.73.13/sawahcek/getdatadone_admin.php"));
 
     return json.decode(response.body);
   }
@@ -93,8 +54,8 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
 
   @override
   void initState() {
+    AdminId = widget.id;
     super.initState();
-    String farmerID = widget.id;
     _tabController = TabController(length: 3, vsync: this);
     getQlist().then((value) {
       setState(() {
@@ -121,7 +82,7 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 220,
+            height: 260,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(30),
@@ -135,11 +96,15 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
                   Padding(padding: const EdgeInsets.only(top: 30.0)),
                   Text(
                     "REALTIME WATER LEVEL",
-                    style: TextStyle(color: Colors.white, fontSize: 30, wordSpacing: 0,fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 40, wordSpacing: 10,fontWeight: FontWeight.bold),
                   ),
                   Text(
                     "MONITORING SYSTEM",
-                    style: TextStyle(color: Colors.white, fontSize: 30, wordSpacing: 0,fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 40, wordSpacing: 10,fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "ADMIN PAGE",
+                    style: TextStyle(color: Colors.white, fontSize: 15, wordSpacing: 10,fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
                   Container(
@@ -183,8 +148,8 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
             ),
             child: TabBar(
               labelColor: Colors.indigo,
-              unselectedLabelColor: Colors.indigo,
-              indicatorColor: Colors.white,
+              unselectedLabelColor: Colors.white,
+              indicatorColor: Colors.indigo,
               controller: _tabController,
               tabs: [
                 Tab(
@@ -218,7 +183,7 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
                         child: GestureDetector(
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (BuildContext context) => Detailonprogress(list: Qlist, index: i),
+                              builder: (BuildContext context) => DetailAdminReportCentre(list: Qlist,index: i,adminid:widget.id),
                             ),
                           ),
                           child: Card(
@@ -242,7 +207,7 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
                           child: GestureDetector(
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (BuildContext context) => Detailonprogress(list: OnList, index: i),
+                                builder: (BuildContext context) => DetailAdminReportCentre(list: OnList, index: i,adminid:widget.id),
                               ),
                             ),
                             child: Card(
@@ -267,7 +232,7 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
                           child: GestureDetector(
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (BuildContext context) => Detailonprogress(list: DoneList, index: i),
+                                builder: (BuildContext context) => DetailAdminReportCentre(list: DoneList, index: i,adminid:widget.id),
                               ),
                             ),
                             child: Card(

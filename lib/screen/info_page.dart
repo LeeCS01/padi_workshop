@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 16.0),
-                selectedTileColor: Colors.indigoAccent.shade100,
+                selectedTileColor: Color.fromRGBO(0, 63, 100, 50),
                 title: Text(
                   "Welcome Back to SawahCheck.",
                   style: Theme.of(context).textTheme.subtitle1!.merge(
@@ -193,13 +193,13 @@ class _HomeState extends State<Home> {
                       Icons.circle,
                       size: 12.0,
                       color: pageNo == index
-                          ? Colors.indigoAccent
+                          ? Color.fromRGBO(0, 63, 100, 50)
                           : Colors.grey.shade300,
                     ),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: pageNo == index ? Colors.indigoAccent : Colors.black,
+                        color: pageNo == index ? Color.fromRGBO(0, 63, 100, 50): Colors.black,
                         width: pageNo == index ? 3.0 : 1.0,
                       ),
                     ),

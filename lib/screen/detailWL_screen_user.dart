@@ -51,7 +51,7 @@ class _DetailWaterLevelState extends State<DetailWaterLevel> {
 
   Future<Null> realtimeupdate() async {
     final response = await http
-        .post(Uri.parse("http://10.131.73.60/sawahcek/realtimeupdate.php"));
+        .post(Uri.parse("http://10.131.73.13/sawahcek/realtimeupdate.php"));
     if (response.statusCode == 200) {
       print("new data update");
 
@@ -66,7 +66,7 @@ class _DetailWaterLevelState extends State<DetailWaterLevel> {
       'deviceID': deviceID,
     };
     final response = await http.post(
-       Uri.parse("http://10.131.73.60/sawahcek/dataone.php"),
+       Uri.parse("http://10.131.73.13/sawahcek/dataone.php"),
       body: postData,
     );
 
@@ -101,7 +101,7 @@ class _DetailWaterLevelState extends State<DetailWaterLevel> {
     };
 
     final response = await http.post(
-      Uri.parse("http://10.131.73.60/sawahcek/getdetailsdevice.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/getdetailsdevice.php"),
       body: postData,
     );
 
@@ -123,7 +123,7 @@ class _DetailWaterLevelState extends State<DetailWaterLevel> {
       'deviceID': deviceID,
     };
     final response = await http.post(
-      Uri.parse("http://10.131.73.60/sawahcek/datamonthly.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/datamonthly.php"),
       body: postData,
     );
 
@@ -216,16 +216,17 @@ class _DetailWaterLevelState extends State<DetailWaterLevel> {
                           GFProgressBar(
                             percentage: updatescala(),
                             lineHeight: 45,
-                            width: 450,
+                            width: 300,
                             alignment: MainAxisAlignment.spaceEvenly,
                             backgroundColor: Colors.black12,
                             progressBarColor: getProgressBarColor(
                                wl ),
                           ),
+                          SizedBox(height: 20,),
                           Text(
                               "Real Time Status: "+wl,
                               style:
-                              TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+                              TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                           Text(
 
                               "Real Time Scala: ${rtscale + " Meter" }",

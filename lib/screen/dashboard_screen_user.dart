@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sawahcek/screen/WL_screen.dart';
 import 'package:sawahcek/screen/notif_screen_user.dart';
 import 'package:sawahcek/screen/profile_screen_admin.dart';
 import 'package:sawahcek/screen/profile_screen_user.dart';
@@ -8,6 +7,8 @@ import 'package:sawahcek/screen/realtimewl_screen_user.dart';
 import 'package:sawahcek/screen/waterlevel_screen.dart';
 import 'package:sawahcek/screen/reportcentre.dart';
 import 'package:sawahcek/screen/ereport.dart';
+import 'package:sawahcek/screen/wlreport_screen_user.dart';
+import 'package:sawahcek/screen/chart.dart';
 
 class DashboardUser extends StatelessWidget {
   final String id;
@@ -150,7 +151,7 @@ class DashboardUser extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 const Text(
-                  "SawahCheck",
+                  "Sawah Cek",
                   style: TextStyle(
                     fontSize: 50,
                     color: Colors.white,
@@ -236,14 +237,23 @@ class DashboardUser extends StatelessWidget {
                     CupertinoIcons.alarm,
                     Colors.blueGrey,
                     context,
-                        (context) => Ereport(id:id.toString()) ),
+                       (context) => Wlreportuser(id:id.toString() ),
+                    // (context) => Ereport(id: id.toString(),),
+                ),
                 itemDashboard(
                     'E-Report',
                     CupertinoIcons.thermometer,
                     Colors.blueGrey,
                     context,
-                        (context) =>Reportcentre(id: '', username: '',)),
+
+                 // (context) =>LineChartSample()),
+                        (context) =>Reportcentre(id:id.toString(),username: username)),
+
                 itemSettings(context),
+
+
+
+
               ],
             ),
           ),

@@ -121,7 +121,7 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 220,
+            height: 250,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(30),
@@ -135,11 +135,11 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
                   Padding(padding: const EdgeInsets.only(top: 30.0)),
                   Text(
                     "REALTIME WATER LEVEL",
-                    style: TextStyle(color: Colors.white, fontSize: 30, wordSpacing: 0,fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 40, wordSpacing: 10,fontWeight: FontWeight.bold),
                   ),
                   Text(
                     "MONITORING SYSTEM",
-                    style: TextStyle(color: Colors.white, fontSize: 30, wordSpacing: 0,fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 40, wordSpacing: 10,fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
                   Container(
@@ -183,8 +183,8 @@ class _ReportcentreState extends State<Reportcentre> with SingleTickerProviderSt
             ),
             child: TabBar(
               labelColor: Colors.indigo,
-              unselectedLabelColor: Colors.indigo,
-              indicatorColor: Colors.white,
+              unselectedLabelColor: Colors.white,
+              indicatorColor: Colors.indigo,
               controller: _tabController,
               tabs: [
                 Tab(

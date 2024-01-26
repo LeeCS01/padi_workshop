@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:sawahcek/screen/detailadminreportcentre.dart';
 import 'package:sawahcek/screen/detailonprogress.dart';
@@ -27,6 +28,7 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
 
   //Data Diambil Qlist
   Future<List?> getQlist() async {
+
     final response = await http.get(Uri.parse("http://10.131.73.13/sawahcek/getdatareqaduan_admin.php"));
     return json.decode(response.body);
   }
@@ -35,16 +37,21 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
 //---------------------------------------------------------------------------------------------------
   //Data Diambil Onlist
   Future<List?> getOnlist() async {
+
     final response = await http.get(Uri.parse("http://10.131.73.13/sawahcek/getdataonprogress_admin.php"));
+
     return json.decode(response.body);
   }
-  
+
+
 
 
 //---------------------------------------------------------------------------------------------------
   //Data Diambil Onlist
   Future<List?> getDonelist() async {
+
     final response = await http.get(Uri.parse("http://10.131.73.13/sawahcek/getdatadone_admin.php"));
+
 
     return json.decode(response.body);
   }
@@ -71,8 +78,6 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
       setState(() {
         DoneList= value?? [];
       });});
-
-
   }
 //------------------------------------------------------------------------------------
   @override
@@ -82,7 +87,7 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 260,
+            height: 240,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(30),
@@ -96,15 +101,15 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
                   Padding(padding: const EdgeInsets.only(top: 30.0)),
                   Text(
                     "REALTIME WATER LEVEL",
-                    style: TextStyle(color: Colors.white, fontSize: 40, wordSpacing: 10,fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 30, wordSpacing: 0,fontWeight: FontWeight.bold),
                   ),
                   Text(
                     "MONITORING SYSTEM",
-                    style: TextStyle(color: Colors.white, fontSize: 40, wordSpacing: 10,fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 30, wordSpacing: 0,fontWeight: FontWeight.bold),
                   ),
                   Text(
                     "ADMIN PAGE",
-                    style: TextStyle(color: Colors.white, fontSize: 15, wordSpacing: 10,fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.white, fontSize: 20, wordSpacing: 0,fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 10),
                   Container(
@@ -147,9 +152,9 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
               ),
             ),
             child: TabBar(
-              labelColor: Colors.indigo,
-              unselectedLabelColor: Colors.white,
-              indicatorColor: Colors.indigo,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.indigo,
+              indicatorColor: Colors.white,
               controller: _tabController,
               tabs: [
                 Tab(
@@ -181,20 +186,20 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
                       return Container(
                         padding: const EdgeInsets.all(10.0),
                         child: GestureDetector(
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => DetailAdminReportCentre(list: Qlist,index: i),
-                            ),
-                          ),
-                          child: Card(
-                            child: ListTile(
-                              title: Text(Qlist?[i]['CaseID'] ?? ''),
-                              leading: Icon(Icons.request_page),
-                              subtitle: Text("TypeCase : ${Qlist?[i]['TypeCase'] ?? ''}"),
-                              trailing:Text("Issues at : ${Qlist?[i]['DateIssues'] +"  ${Qlist?[i]['TimeIssues']}" ?? ''}"),
-                            ),
-                          ),
-                        ),
+                            onTap: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                builder: (BuildContext context) => DetailAdminReportCentre(list: Qlist,index: i,adminid:widget.id),
+                      ),
+                      ),
+                      child: Card(
+                      child: ListTile(
+                      title: Text(Qlist?[i]['CaseID'] ?? ''),
+                      leading: Icon(Icons.mail_outline),
+                      subtitle: Text("TypeCase : ${Qlist?[i]['TypeCase'] ?? ''}"),
+                      trailing:Text("Issues at : ${Qlist?[i]['DateIssues'] +"  ${Qlist?[i]['TimeIssues']}" ?? ''}"),
+                      ),
+                      ),
+                      ),
                       );
                     },
                   ),
@@ -207,7 +212,7 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
                           child: GestureDetector(
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (BuildContext context) => DetailAdminReportCentre(list: OnList, index: i),
+                                builder: (BuildContext context) => DetailAdminReportCentre(list: OnList, index: i,adminid:widget.id),
                               ),
                             ),
                             child: Card(
@@ -232,7 +237,7 @@ class _AdminReportcentreState extends State<AdminReportcentre> with SingleTicker
                           child: GestureDetector(
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (BuildContext context) => DetailAdminReportCentre(list: DoneList, index: i),
+                                builder: (BuildContext context) => DetailAdminReportCentre(list: DoneList, index: i,adminid:widget.id),
                               ),
                             ),
                             child: Card(

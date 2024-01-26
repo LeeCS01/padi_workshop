@@ -10,7 +10,7 @@ class LineChartSample extends StatefulWidget {
 
 class _LineChartSampleState extends State<LineChartSample> {
   Future<List<Map<String, dynamic>>> fetchDataMonthly() async {
-    final response = await http.get(Uri.parse('http://10.131.73.60/sawahcek/datamontly.php'));
+    final response = await http.get(Uri.parse('http://10.131.73.13/sawahcek/datamontly.php'));
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = json.decode(response.body);

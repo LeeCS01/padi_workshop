@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -5,7 +6,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:sawahcek/screen/detailNotif.dart';
 
 class Notif extends StatefulWidget {
- // const Notif({Key? key}) : super(key: key);
+  // const Notif({Key? key}) : super(key: key);
 
 
 
@@ -55,7 +56,7 @@ class _NotifState extends State<Notif> {
   Future<List?> sendDataToServer() async {
 
 
-print(widget.id);
+    print(widget.id);
     Map<String, dynamic> postData = {
       'TargetUser': widget.id,
     };
@@ -64,7 +65,7 @@ print(widget.id);
       Uri.parse("http://10.131.73.13/sawahcek/getnotifdevice.php"),
       body: postData,
     );
-return json.decode(response.body);
+    return json.decode(response.body);
   }
 }
 
@@ -79,20 +80,6 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
-
-  // void intstate() {
-  //   super.initState();
-  //   initPlatformState();
-  // }
-  // Future<void> initPlatformState() async {
-  //   //Remove this method to stop OneSignal Debugging
-  //   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-  //
-  //   OneSignal.initialize("dbdc2b8a-34f0-4b2d-882d-f933352ad28c");
-  //
-  //   // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-  //   OneSignal.Notifications.requestPermission(true);
-  // }
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -108,17 +95,68 @@ class _ItemListState extends State<ItemList> {
             ),
             child: Card(
               child: ListTile(
-                title: Text(widget.list?[i]['RealTimeStatus']+" AT "+widget.list?[i]['Location'] ?? ''),
-                leading: Icon(Icons.warning),
-                subtitle: Text("Advice : ${widget.list?[i]['Advice'] ?? ''}"),
-                trailing: Text("Real Time Scala : ${widget.list?[i]['RealTimeScala'] + " Meter" ?? ''}"),
+                title: Text(
+              widget.list?[i]['RecordedStatus'] + " AT " + widget.list?[i]['Location'] ?? '',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black, // Adjust the text color
+                ),
               ),
+              leading: Container(
+                padding: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Colors.red, // Set the background color of the icon container
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.warning,
+                  color: Colors.white, // Set the icon color
+                ),
+              ),
+              subtitle: Text(
+                "Advice : ${widget.list?[i]['Advice'] ?? ''}",
+                style: TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.grey, // Adjust the text color
+                ),
+              ),
+              trailing: Container(
+                width: 0,
+                height: 150,
+                decoration: BoxDecoration(
+                  color: _getBackgroundColor(widget.list?[i]['RecordedStatus']),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Center(
+                  child: Text(
+                    "Recorded Scala : ${widget.list?[i]['RecordedScala'] + " Meter" ?? ''}",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.white, // Adjust the text color
+                    ),
+                  ),
+                ),
+              ),
+
             ),
           ),
+        ),
         );
       },
     );
   }
+  Color _getBackgroundColor(String? recordedStatus) {
+    if (recordedStatus == "Low Level") {
+      return Colors.green;
+    } else if (recordedStatus == "Normal Level") {
+      return Colors.yellow;
+    } else if (recordedStatus == "High Level") {
+      return Colors.red;
+    } else {
+      // Default color if the status is not recognized
+      return Colors.grey;
+    }
+  }
+
 }
-
-

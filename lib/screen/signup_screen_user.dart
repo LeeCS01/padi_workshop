@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../model/signup_model.dart';
-import 'dam_screen.dart';
 import 'login_screen.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -29,25 +28,6 @@ class _SignupState extends State<Signup> {
   final TextEditingController levelController = TextEditingController(text: '');
   var isObsecure = true.obs;
   var formKey = GlobalKey<FormState>();
-
-  // List<String> statesInMalaysia = [
-  //   'Johor',
-  //   'Kedah',
-  //   'Kelantan',
-  //   'Melaka',
-  //   'Negeri Sembilan',
-  //   'Pahang',
-  //   'Penang',
-  //   'Perak',
-  //   'Perlis',
-  //   'Sabah',
-  //   'Sarawak',
-  //   'Selangor',
-  //   'Terengganu',
-  //   'Wilayah Persekutuan Kuala Lumpur',
-  //   'Wilayah Persekutuan Labuan',
-  //   'Wilayah Persekutuan Putrajaya',
-  // ];
 
   void _addUser() async {
     try{
@@ -82,7 +62,7 @@ class _SignupState extends State<Signup> {
           });
         });
       }else {
-        _showMessage("Email already been used. Try another email.");
+        _showMessage("Email and/or username already been used. Try another.");
       }
       emailController.clear();
     }
@@ -165,7 +145,14 @@ class _SignupState extends State<Signup> {
                                   //getting fullname from user
                                   TextFormField(
                                     controller: fullnameController,
-                                    validator: (val) => val == "" ? "Please write your full name" : null,
+                                    validator: (val) {
+                                      if (val == "") {
+                                        return "Please write your full name";
+                                      } else if (!RegExp(r'^[a-zA-Z\s\-&/]*$').hasMatch(val!)) {
+                                        return "Full name cannot contain number";
+                                      }
+                                      return null;
+                                    },
                                     decoration: InputDecoration(
                                       prefixIcon: const Icon(
                                         Icons.person_2_outlined,
@@ -173,16 +160,17 @@ class _SignupState extends State<Signup> {
                                       ),
                                       hintText: "full name...",
                                       border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: const BorderSide(
-                                            color: Colors.white60,
-                                          )
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white60,
+                                        ),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: const BorderSide(
-                                            color: Color.fromRGBO(0, 63, 100, 50),
-                                            width: 3.0,                                          )
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Color.fromRGBO(0, 63, 100, 50),
+                                          width: 3.0,
+                                        ),
                                       ),
                                       contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 14,
@@ -195,79 +183,80 @@ class _SignupState extends State<Signup> {
 
                                   const SizedBox(height: 10,),
 
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // getting username from user
-                                      Expanded(
-                                        child: TextFormField(
-                                          controller: usernameController,
-                                          validator: (val) => val == "" ? "Please write your username" : null,
-                                          decoration: InputDecoration(
-                                            prefixIcon: const Icon(
-                                              Icons.person_2_outlined,
-                                              color: Colors.black,
-                                            ),
-                                            hintText: "username...",
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(30),
-                                              borderSide: const BorderSide(
-                                                color: Colors.white60,
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(30),
-                                              borderSide: const BorderSide(
-                                                color: Color.fromRGBO(0, 63, 100, 50),
-                                                width: 3.0,
-                                              ),
-                                            ),
-                                            contentPadding: const EdgeInsets.symmetric(
-                                              horizontal: 14,
-                                              vertical: 6,
-                                            ),
-                                            fillColor: Colors.white,
-                                            filled: true,
-                                          ),
+                                  TextFormField(
+                                    controller: usernameController,
+                                    validator: (val) => val == "" ? "Please write your username" : null,
+                                    decoration: InputDecoration(
+                                      prefixIcon: const Icon(
+                                        Icons.person_2_outlined,
+                                        color: Colors.black,
+                                      ),
+                                      hintText: "username...",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white60,
                                         ),
                                       ),
-
-                                      const SizedBox(width: 10),
-
-                                      // getting phone number from user
-                                      Expanded(
-                                        child: TextFormField(
-                                          controller: phoneController,
-                                          validator: (val) => val == "" ? "Please write your phone number" : null,
-                                          decoration: InputDecoration(
-                                            prefixIcon: const Icon(
-                                              Icons.phone_iphone,
-                                              color: Colors.black,
-                                            ),
-                                            hintText: "phone no...",
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(30),
-                                              borderSide: const BorderSide(
-                                                color: Colors.white60,
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(30),
-                                              borderSide: const BorderSide(
-                                                color: Color.fromRGBO(0, 63, 100, 50),
-                                                width: 3.0,
-                                              ),
-                                            ),
-                                            contentPadding: const EdgeInsets.symmetric(
-                                              horizontal: 14,
-                                              vertical: 6,
-                                            ),
-                                            fillColor: Colors.white,
-                                            filled: true,
-                                          ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Color.fromRGBO(0, 63, 100, 50),
+                                          width: 3.0,
                                         ),
                                       ),
-                                    ],
+                                      contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 6,
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 10),
+
+                                  // getting phone number from user
+                                  TextFormField(
+                                    controller: phoneController,
+                                    keyboardType: TextInputType.phone,
+                                    validator: (val) {
+                                      String phone = val?.trim() ?? "";
+                                      if (phone.isEmpty) {
+                                        return "Please enter your phone number";
+                                      } else if (!RegExp(r'^[0-9]+$').hasMatch(phone)) {
+                                        return "Phone number can only contain digits";
+                                      } else if (phone.length < 10 || phone.length > 12) {
+                                        return "Phone number must be between 10 and 12 digits";
+                                      }
+                                      return null;
+                                    },
+                                    decoration: InputDecoration(
+                                      prefixIcon: const Icon(
+                                        Icons.phone_iphone,
+                                        color: Colors.black,
+                                      ),
+                                      hintText: "phone no...",
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white60,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Color.fromRGBO(0, 63, 100, 50),
+                                          width: 3.0,
+                                        ),
+                                      ),
+                                      contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 14,
+                                        vertical: 6,
+                                      ),
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                    ),
                                   ),
 
                                   const SizedBox(height: 10,),
@@ -304,54 +293,18 @@ class _SignupState extends State<Signup> {
 
                                   const SizedBox(height: 10,),
 
-                                  //getting state from user
-                                  // DropdownButtonFormField<String>(
-                                  //   value: levelController.text.isEmpty ? null : levelController.text,
-                                  //   onChanged: (newValue) {
-                                  //     setState(() {
-                                  //       levelController.text = newValue!;
-                                  //     });
-                                  //   },
-                                  //   validator: (val) =>
-                                  //   val == null ? "Please select your state" : null, // Add validator here
-                                  //   items: statesInMalaysia.map((state) {
-                                  //     return DropdownMenuItem(
-                                  //       value: state,
-                                  //       child: Text(state),
-                                  //     );
-                                  //   }).toList(),
-                                  //   decoration: InputDecoration(
-                                  //     prefixIcon: const Icon(
-                                  //       Icons.flag_outlined,
-                                  //       color: Colors.black,
-                                  //     ),
-                                  //     hintText: "Select your state", // Add hint text here
-                                  //     border: OutlineInputBorder(
-                                  //       borderRadius: BorderRadius.circular(30),
-                                  //       borderSide: const BorderSide(
-                                  //         color: Colors.white60,
-                                  //       ),
-                                  //     ),
-                                  //     enabledBorder: OutlineInputBorder(
-                                  //       borderRadius: BorderRadius.circular(30),
-                                  //       borderSide: const BorderSide(
-                                  //         color: Color.fromRGBO(0, 63, 100, 50),
-                                  //         width: 3.0,
-                                  //       ),
-                                  //     ),
-                                  //     contentPadding: const EdgeInsets.symmetric(
-                                  //       horizontal: 14,
-                                  //       vertical: 6,
-                                  //     ),
-                                  //     fillColor: Colors.white,
-                                  //     filled: true,
-                                  //   ),
-                                  // ),
-
+                                  //getting email from user
                                   //getting email from user
                                   TextFormField(
                                     controller: emailController,
-                                    validator: (val) => val == "" ? "Please write email" : null,
+                                    validator: (val) {
+                                      if (val == null || val.isEmpty) {
+                                        return "Please write email";
+                                      } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$').hasMatch(val)) {
+                                        return "Please enter a valid email (e.g., john@example.com)";
+                                      }
+                                      return null;
+                                    },
                                     decoration: InputDecoration(
                                       prefixIcon: const Icon(
                                         Icons.email_outlined,
@@ -359,16 +312,17 @@ class _SignupState extends State<Signup> {
                                       ),
                                       hintText: "email...",
                                       border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: const BorderSide(
-                                            color: Colors.white60,
-                                          )
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Colors.white60,
+                                        ),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: const BorderSide(
-                                            color: Color.fromRGBO(0, 63, 100, 50),
-                                            width: 3.0,                                          )
+                                        borderRadius: BorderRadius.circular(30),
+                                        borderSide: const BorderSide(
+                                          color: Color.fromRGBO(0, 63, 100, 50),
+                                          width: 3.0,
+                                        ),
                                       ),
                                       contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 14,

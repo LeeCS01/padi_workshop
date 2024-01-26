@@ -50,7 +50,7 @@ class _OneSignalAppState extends State<OneSignalApp> {
   }
 
   void sendNotification() async {
-    final String endpoint = "http://10.131.73.60/sawahcek/send_notification.php";
+    final String endpoint = "http://10.131.73.13/sawahcek/send_notification.php";
 
     try {
       final response = await http.post(Uri.parse(endpoint));

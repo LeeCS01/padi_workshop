@@ -35,7 +35,7 @@ class _EditNotifAdminState extends State<EditNotifAdmin> {
   // Add this function to your _EditDevicePageState class
   Future<void> updateDevice() async {
     final response = await http.post(
-      Uri.parse("http://10.131.73.60/sawahcek/editnotif_admin.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/editnotif_admin.php"),
       body: {
         "NotifID": notifController.text,
         "DeviceID": deviceController.text,
@@ -62,7 +62,7 @@ class _EditNotifAdminState extends State<EditNotifAdmin> {
 
   Future<Map<String, dynamic>> fetchDeviceData(String NotifID) async {
     final response = await http.get(
-      Uri.parse("http://10.131.73.60/sawahcek/getnotifspec.php?NotifID=$NotifID"),
+      Uri.parse("http://10.131.73.13/sawahcek/getnotifspec.php?NotifID=$NotifID"),
     );
 
     Map<String, dynamic> data = json.decode(response.body);

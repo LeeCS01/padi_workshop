@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sawahcek/screen/dam_screen.dart';
+import 'package:sawahcek/screen/newdeviceAdmin_screen.dart';
 import 'package:sawahcek/screen/profile_screen_admin.dart';
 import 'package:sawahcek/screen/adminreportcentre.dart';
+import 'package:sawahcek/screen/onesignal.dart';
+import 'package:sawahcek/screen/realtimewl_screen_user.dart';
+import 'package:sawahcek/screen/wlreport_screen_user.dart';
 
 class DashboardAdmin extends StatelessWidget {
   final String id;
@@ -60,7 +64,8 @@ class DashboardAdmin extends StatelessWidget {
     onTap: () {
       Navigator.push(
         context,
-        CupertinoPageRoute(builder: (context) => const Dam()),
+       // CupertinoPageRoute(builder: (context) => const Dam()),
+        CupertinoPageRoute(builder: (context) => const Device()),
       );
     },
     child: Column(
@@ -221,8 +226,12 @@ class DashboardAdmin extends StatelessWidget {
                     'E-Report',
                     CupertinoIcons.thermometer,
                     Colors.blueGrey,
-                    context,
-                        (context) => AdminReportcentre(id: '',)),
+
+                    //context, (context) => Wlreportuser(id:id)),
+                    context,    (context) => AdminReportcentre(id:id)),
+                 // (context) => OneSignalApp()),
+                  //(context) => AwesomeNotificationApp()),
+
                 itemSettings(context),
               ],
             ),

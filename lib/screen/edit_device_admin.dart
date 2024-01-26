@@ -36,7 +36,7 @@ class _EditDevicePageState extends State<EditDevicePage> {
   // Add this function to your _EditDevicePageState class
   Future<void> updateDevice() async {
     final response = await http.post(
-      Uri.parse("http://10.131.73.60/sawahcek/editDevice_admin.php"),
+      Uri.parse("http://10.131.73.13/sawahcek/editDevice_admin.php"),
       body: {
         "deviceID": deviceController.text,
         "size": sizeController.text,
@@ -64,7 +64,7 @@ class _EditDevicePageState extends State<EditDevicePage> {
 
   Future<Map<String, dynamic>> fetchDeviceData(String deviceID) async {
     final response = await http.get(
-      Uri.parse("http://10.131.73.60/sawahcek/getdevicespec.php?deviceID=$deviceID"),
+      Uri.parse("http://10.131.73.13/sawahcek/getdevicespec.php?deviceID=$deviceID"),
     );
 
     Map<String, dynamic> data = json.decode(response.body);
