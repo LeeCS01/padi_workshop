@@ -23,7 +23,9 @@ on the paddy field's water level.
 Problem Statement
 
 -Not having equipment and tools to check the water level.
+
 -Absence of status and current practice monitoring by traditional means. 
+
 -Inadequate manual irrigation control.
 
 ===================================
@@ -31,7 +33,9 @@ Problem Statement
 Objective
 
 -To determine the present issue with paddy field water level monitoring. 
+
 -To determine the instruments currently in use for paddy field water level monitoring. 
+
 -To create an IoT-integrated mobile application.
 
 ===================================
@@ -39,6 +43,7 @@ Objective
 Usefulness
 
 -The System helps the farmer avoid failed crop and increases production
+
 -Easy control and monitoring via mobile apps integrated IoT
 
 ===================================
@@ -46,6 +51,7 @@ Usefulness
 Result
 
 -93 % (26) of test case is successful while 7% (2) is failed.
+
 -We found a way to connect flutter with water detector using arduino 
   then get instant data from detector.
 
