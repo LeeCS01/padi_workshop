@@ -1,33 +1,64 @@
-# sawahcek
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-================================================================================================================================================
-
-Real Time Water Level Monitoring System
+Real Time Water Level Monitoring System 
 .
 .
-.
-.
->>>   INTRODUCTION    <<<
+==== TEAM MEMBERS =====
 
-To overcome the weather issue that cause problems in production of paddy in Malaysia.We have develop an application that will detect the water level of the paddy feild using IoT. 
-It will send notification to the farmer that using the application that which field is low in water. This IoT system will be introduced to the farmers to help them in monitoring the 
-water level situation of the paddy field.
-.
+1.LEE CHUN SEONG (B032110219)
+2.MUHAMMAD AKMAL BIN MOHD ADIB (B032110204)
+3.MUHAMMAD AIMAN HAQEEN BIN MOHAMMAD FAIZAL (B032210046)
+4.MOHAMAD ZULKARNAIN BIN MOHD ANUAR (B032110368)
+
+===================================
+
+Introduction 
+
+To resolve the weather issue that is causing issues with Malaysia's paddy output.
+We have created an application that uses the Internet of Things to determine the 
+paddy field's water level. The farmer who is utilizing the program will receive 
+a notification indicating which field has low water levels. The farmers will be 
+exposed to this Internet of Things technology to assist them in keeping an eye 
+on the paddy field's water level.
+
+===================================
+
+Problem Statement
+
+>>Not having equipment and tools to check the water level.
+>>Absence of status and current practice monitoring by traditional means. 
+>>Inadequate manual irrigation control.
+
+===================================
+
+Objective
+
+>>To determine the present issue with paddy field water level monitoring. 
+>>To determine the instruments currently in use for paddy field water level monitoring. 
+>>To create an IoT-integrated mobile application.
+
+===================================
+
+Usefulness
+
+>>The System helps the farmer avoid failed crop and increases production
+>>Easy control and monitoring via mobile apps integrated IoT
+
+===================================
+
+Result
+
+>>93 % (26) of test case is successful while 7% (2) is failed.
+>>We found a way to connect flutter with water detector using arduino 
+  then get instant data from detector.
+
+===================================
+
+Conclusion
+
+Our team created an application that helps the neighborhood farmer 
+address the problems caused by climate change that result in decreased revenue. 
+Because IoT is implanted, we anticipate that it will resolve the issue. 
+We are confident that our technique is not restricted to the paddy 
+plantation industry, but can be used to other areas of agriculture as well.
 .
 .
 >>>    DATABASE    <<<
